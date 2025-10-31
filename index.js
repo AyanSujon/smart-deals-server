@@ -35,7 +35,16 @@ async function run (){
 
         // find all products
         app.get('/products', async (req, res)=> {
-            const cursor = productsCollection.find();
+
+            console.log(req.query);
+            const email = req.query.email;
+            const query = {}
+            if(email){
+                query.email = email;
+            }
+
+
+            const cursor = productsCollection.find(query).sort({price_min: 1});
             const result = await cursor.toArray();
             res.send(result);
         })
@@ -47,6 +56,7 @@ async function run (){
             const result = await productsCollection.findOne(query);
             res.send(result);
         })
+
 
         app.post('/products', async (req, res)=>{
             const newProduct = req.body;
