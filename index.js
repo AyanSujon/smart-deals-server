@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -10,7 +11,8 @@ app.use(express.json())
 
 // smartDealsUser
 // G711EN7JqE9SOi25
-const uri = "mongodb+srv://smartDealsUser:G711EN7JqE9SOi25@cluster0.tachgq7.mongodb.net/?appName=Cluster0";
+const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.tachgq7.mongodb.net/?appName=Cluster0`;
+// const uri = "mongodb+srv://smartDealsUser:G711EN7JqE9SOi25@cluster0.tachgq7.mongodb.net/?appName=Cluster0";
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -112,6 +114,7 @@ async function run (){
             const result = await productsCollection.updateOne(query, update);
             res.send(result);
         })
+        
 
         app.delete('/products/:id', async(req, res)=>{
             const id = req.params.id;
